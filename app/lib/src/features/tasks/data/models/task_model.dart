@@ -17,6 +17,8 @@ class TaskModel extends Task {
     super.parentId,
     super.orderIndex,
     super.objectives,
+    super.tags,
+    super.linkedTaskIds,
   });
 
   factory TaskModel.fromEntity(Task task) {
@@ -36,6 +38,8 @@ class TaskModel extends Task {
       parentId: task.parentId,
       orderIndex: task.orderIndex,
       objectives: task.objectives,
+      tags: task.tags,
+      linkedTaskIds: task.linkedTaskIds,
     );
   }
 
@@ -56,6 +60,8 @@ class TaskModel extends Task {
       parentId: parentId,
       orderIndex: orderIndex,
       objectives: objectives,
+      tags: tags,
+      linkedTaskIds: linkedTaskIds,
     );
   }
 }

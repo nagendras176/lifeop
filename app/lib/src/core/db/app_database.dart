@@ -1,18 +1,25 @@
+import 'package:drift/drift.dart';
 import 'connection/open_connection.dart';
+import 'tables/tasks.dart';
+import 'tables/tags.dart';
+import 'tables/task_links.dart';
 
-class AppDatabase {
-  final DatabaseConnection _connection;
-  
-  AppDatabase(this._connection);
-  
-  Future<void> initialize() async {
-    await _connection.open();
-    // TODO: Initialize database schema
-  }
-  
-  Future<void> close() async {
-    await _connection.close();
-  }
-  
-  bool get isOpen => _connection.isOpen;
+part 'app_database.g.dart';
+
+@DriftDatabase(tables: [Tasks, Objectives, Tags, TaskTags, TaskLinks])
+class AppDatabase extends _$AppDatabase {
+  AppDatabase() : super(openConnection());
+
+  @override
+  int get schemaVersion => 1;
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+        onCreate: (m) async {
+          await m.createAll();
+        },
+        onUpgrade: (m, from, to) async {
+          // Handle future migrations here
+        },
+      );
 }

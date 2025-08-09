@@ -1,11 +1,6 @@
-// TODO: Implement Riverpod providers when the package is added
-// This file will contain task-related state management
-// For now, it's a placeholder
+import '../../../core/di/providers.dart';
+import '../../domain/usecases/get_tasks.dart';
+import '../../domain/usecases/create_task.dart';
 
-class TaskProviders {
-  // TODO: Define providers for:
-  // - Task list state
-  // - Task creation/editing state
-  // - Task filtering and sorting
-  // - Task progress tracking
-}
+GetTasks get getTasksProvider => serviceLocator.getTasks;
+CreateTask get createTaskProvider => serviceLocator.createTask;

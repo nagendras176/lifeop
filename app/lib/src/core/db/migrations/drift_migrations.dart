@@ -1,11 +1,4 @@
-// TODO: Implement Drift migrations when the package is added
-// This file will contain database schema migration logic
-// For now, it's a placeholder
+// Migrations are handled via the MigrationStrategy in AppDatabase for now.
+// Add explicit versioned migrations here when schemaVersion increases.
 
-class DriftMigrations {
-  // TODO: Define migration steps:
-  // - Initial schema creation
-  // - Schema updates for new features
-  // - Data migration helpers
-  // - Schema version management
-}
+class DriftMigrations {}

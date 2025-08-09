@@ -46,6 +46,36 @@ class Objective {
   );
 }
 
+class Tag {
+  final String id;
+  final String name;
+  final Color? color;
+
+  const Tag({
+    required this.id,
+    required this.name,
+    this.color,
+  });
+
+  Tag copyWith({String? id, String? name, Color? color}) => Tag(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        color: color ?? this.color,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'name': name,
+        'color': color?.value,
+      };
+
+  factory Tag.fromJson(Map<String, dynamic> json) => Tag(
+        id: json['id'] as String,
+        name: json['name'] as String,
+        color: json['color'] != null ? Color(json['color'] as int) : null,
+      );
+}
+
 class Task {
   final String id;
   final String title;
@@ -62,6 +92,8 @@ class Task {
   final String? parentId;
   final int orderIndex;
   final List<Objective> objectives;
+  final List<Tag> tags;
+  final List<String> linkedTaskIds;
 
   const Task({
     required this.id,
@@ -79,6 +111,8 @@ class Task {
     this.parentId,
     this.orderIndex = 0,
     this.objectives = const [],
+    this.tags = const [],
+    this.linkedTaskIds = const [],
   });
 
   Task copyWith({
@@ -97,6 +131,8 @@ class Task {
     String? parentId,
     int? orderIndex,
     List<Objective>? objectives,
+    List<Tag>? tags,
+    List<String>? linkedTaskIds,
   }) {
     return Task(
       id: id ?? this.id,
@@ -114,6 +150,8 @@ class Task {
       parentId: parentId ?? this.parentId,
       orderIndex: orderIndex ?? this.orderIndex,
       objectives: objectives ?? this.objectives,
+      tags: tags ?? this.tags,
+      linkedTaskIds: linkedTaskIds ?? this.linkedTaskIds,
     );
   }
 
@@ -133,6 +171,8 @@ class Task {
     'parentId': parentId,
     'orderIndex': orderIndex,
     'objectives': objectives.map((o) => o.toJson()).toList(),
+    'tags': tags.map((t) => t.toJson()).toList(),
+    'linkedTaskIds': linkedTaskIds,
   };
 
   factory Task.fromJson(Map<String, dynamic> json) => Task(
@@ -151,7 +191,16 @@ class Task {
     parentId: json['parentId'] as String?,
     orderIndex: json['orderIndex'] as int? ?? 0,
     objectives: (json['objectives'] as List<dynamic>?)
-        ?.map((o) => Objective.fromJson(o as Map<String, dynamic>))
-        .toList() ?? [],
+            ?.map((o) => Objective.fromJson(o as Map<String, dynamic>))
+            .toList() ??
+        [],
+    tags: (json['tags'] as List<dynamic>?)
+            ?.map((t) => Tag.fromJson(t as Map<String, dynamic>))
+            .toList() ??
+        [],
+    linkedTaskIds: (json['linkedTaskIds'] as List<dynamic>?)
+            ?.map((e) => e as String)
+            .toList() ??
+        [],
   );
 }

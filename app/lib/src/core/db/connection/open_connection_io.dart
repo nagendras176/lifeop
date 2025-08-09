@@ -1,24 +1,15 @@
-import 'package:flutter/foundation.dart';
+import 'dart:io';
+import 'package:drift/drift.dart';
+import 'package:drift/native.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
+import 'package:sqlite3_flutter_libs/sqlite3_flutter_libs.dart';
 
-abstract class DatabaseConnection {
-  Future<void> open();
-  Future<void> close();
-  bool get isOpen;
-}
-
-class IoDatabaseConnection implements DatabaseConnection {
-  @override
-  Future<void> open() async {
-    // TODO: Implement native database connection
-    debugPrint('Opening IO database connection');
-  }
-  
-  @override
-  Future<void> close() async {
-    // TODO: Implement native database connection close
-    debugPrint('Closing IO database connection');
-  }
-  
-  @override
-  bool get isOpen => false; // TODO: Implement actual connection state
+QueryExecutor openConnection() {
+  return LazyDatabase(() async {
+    final Directory dir = await getApplicationDocumentsDirectory();
+    final String dbPath = p.join(dir.path, 'app.db');
+    await applyWorkaroundToOpenSqlite3OnOldAndroidVersions();
+    return NativeDatabase(File(dbPath));
+  });
 }

@@ -1,24 +1,6 @@
-import 'package:flutter/foundation.dart';
+import 'package:drift/drift.dart';
+import 'package:drift/web.dart';
 
-abstract class DatabaseConnection {
-  Future<void> open();
-  Future<void> close();
-  bool get isOpen;
-}
-
-class WebDatabaseConnection implements DatabaseConnection {
-  @override
-  Future<void> open() async {
-    // TODO: Implement web database connection
-    debugPrint('Opening web database connection');
-  }
-  
-  @override
-  Future<void> close() async {
-    // TODO: Implement web database connection close
-    debugPrint('Closing web database connection');
-  }
-  
-  @override
-  bool get isOpen => false; // TODO: Implement actual connection state
+QueryExecutor openConnection() {
+  return WebDatabase('app_db');
 }
