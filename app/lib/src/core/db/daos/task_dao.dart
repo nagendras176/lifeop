@@ -10,4 +10,12 @@ abstract class TaskDao {
   Future<void> reorderTasks(List<String> taskIds);
   Future<List<Task>> getTasksByStatus(TaskStatus status);
   Future<List<Task>> getTasksByPriority(Priority priority);
+
+  // Tags
+  Future<void> addTagToTask(String taskId, Tag tag);
+  Future<void> removeTagFromTask(String taskId, String tagId);
+
+  // Links
+  Future<void> linkTasks(String fromTaskId, String toTaskId);
+  Future<void> unlinkTasks(String fromTaskId, String toTaskId);
 }
