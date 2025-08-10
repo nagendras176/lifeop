@@ -1,50 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:drift/drift.dart' show Value;
-import '../../../domain/entities/task.dart';
-import '../../../../core/db/app_database.dart';
+import '../../../domain/entities/task.dart' as domain;
+import '../../../../../core/db/app_database.dart';
 
 class TaskMappers {
-  static Task fromComposite(
-    TasksData task,
-    List<ObjectivesData> objectives,
-    List<TagsData> tags,
+  static domain.Task fromComposite(
+    Task task,
+    List<Objective> objectives,
+    List<domain.Tag> tags,
     List<String> linkedIds,
   ) {
-    return Task(
+    return domain.Task(
       id: task.id,
       title: task.title,
-      description: task.description,
+      description: task.description ?? '',
       notes: task.notes,
-      priority: Priority.values.firstWhere((e) => e.name == task.priority),
-      taskType: TaskType.values.firstWhere((e) => e.name == task.taskType),
+      priority: domain.Priority.values.firstWhere((e) => e.name == task.priority),
+      taskType: domain.TaskType.values.firstWhere((e) => e.name == task.taskType),
       deadline: task.deadline,
-      color: Color(task.color),
+      color: Color(task.color ?? 0),
       reminderTime: task.reminderTime,
       createdAt: task.createdAt,
       updatedAt: task.updatedAt,
-      status: TaskStatus.values.firstWhere((e) => e.name == task.status),
+      status: domain.TaskStatus.values.firstWhere((e) => e.name == task.status),
       parentId: task.parentId,
       orderIndex: task.orderIndex,
       objectives: objectives
-          .map((o) => Objective(
+          .map((o) => domain.Objective(
                 id: o.id,
                 name: o.name,
                 weight: o.weight,
                 isCompleted: o.isCompleted,
               ))
           .toList(),
-      tags: tags
-          .map((t) => Tag(
-                id: t.id,
-                name: t.name,
-                color: t.color != null ? Color(t.color!) : null,
-              ))
-          .toList(),
+      tags: tags,
       linkedTaskIds: linkedIds,
     );
   }
 
-  static TasksCompanion toTasksCompanion(Task task) {
+  static TasksCompanion toTasksCompanion(domain.Task task) {
     return TasksCompanion(
       id: Value(task.id),
       parentId: Value(task.parentId),
@@ -55,7 +49,7 @@ class TaskMappers {
       priority: Value(task.priority.name),
       taskType: Value(task.taskType.name),
       deadline: Value(task.deadline),
-      color: Value(task.color.value),
+      color: Value(task.color.toARGB32()),
       reminderTime: Value(task.reminderTime),
       status: Value(task.status.name),
       createdAt: Value(task.createdAt),

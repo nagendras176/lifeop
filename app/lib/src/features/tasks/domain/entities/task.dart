@@ -66,7 +66,7 @@ class Tag {
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
-        'color': color?.value,
+        'color': color?.toARGB32(),
       };
 
   factory Tag.fromJson(Map<String, dynamic> json) => Tag(
@@ -163,7 +163,7 @@ class Task {
     'priority': priority.name,
     'taskType': taskType.name,
     'deadline': deadline?.toIso8601String(),
-    'color': color.value,
+    'color': color.toARGB32(),
     'reminderTime': reminderTime?.toIso8601String(),
     'createdAt': createdAt.toIso8601String(),
     'updatedAt': updatedAt.toIso8601String(),

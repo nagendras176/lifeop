@@ -42,12 +42,33 @@ CREATE TABLE objectives (
     UNIQUE(task_id, name)
 );
 
+-- Tags table (simplified - directly linked to tasks)
+CREATE TABLE tag (
+    task_id UUID NOT NULL REFERENCES tasks(id) ON DELETE CASCADE,
+    name VARCHAR(255) NOT NULL,
+    color INTEGER,
+    
+    -- Composite primary key: task_id + name
+    PRIMARY KEY (task_id, name)
+);
+
+-- Task links table
+CREATE TABLE task_links (
+    from_task_id UUID NOT NULL REFERENCES tasks(id) ON DELETE CASCADE,
+    to_task_id UUID NOT NULL REFERENCES tasks(id) ON DELETE CASCADE,
+    
+    PRIMARY KEY (from_task_id, to_task_id)
+);
+
 -- Indexes for performance
 CREATE INDEX idx_tasks_parent_order ON tasks(parent_id, order_index);
 CREATE INDEX idx_tasks_status ON tasks(status);
 CREATE INDEX idx_tasks_created_at ON tasks(created_at);
 CREATE INDEX idx_objectives_task_id ON objectives(task_id);
 CREATE INDEX idx_objectives_completed ON objectives(is_completed);
+CREATE INDEX idx_tag_task_id ON tag(task_id);
+CREATE INDEX idx_task_links_from ON task_links(from_task_id);
+CREATE INDEX idx_task_links_to ON task_links(to_task_id);
 
 -- Trigger function to validate weight sum = 100
 CREATE OR REPLACE FUNCTION validate_objective_weights()

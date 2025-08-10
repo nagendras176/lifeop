@@ -1,5 +1,6 @@
+import 'package:app/src/core/theme/theme.dart';
 import 'package:flutter/material.dart';
-import 'features/tasks/presentation/pages/task_queue_screen.dart';
+import 'features/tasks/presentation/pages/queue.dart';
 
 class TaskTrackerApp extends StatelessWidget {
   const TaskTrackerApp({super.key});
@@ -8,17 +9,9 @@ class TaskTrackerApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Task Tracker',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        useMaterial3: true,
-        brightness: Brightness.dark,
-        scaffoldBackgroundColor: Colors.black,
-        colorScheme: ColorScheme.dark(
-          primary: Colors.blue,
-          secondary: Colors.blueAccent,
-          surface: Colors.grey[900]!,
-        ),
-      ),
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.dark,
+      theme: AppTheme.lightTheme,
       home: const TaskQueueScreen(),
     );
   }

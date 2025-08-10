@@ -13,7 +13,7 @@ abstract class TaskDao {
 
   // Tags
   Future<void> addTagToTask(String taskId, Tag tag);
-  Future<void> removeTagFromTask(String taskId, String tagId);
+  Future<void> removeTagFromTask(String taskId, String tagName);
 
   // Links
   Future<void> linkTasks(String fromTaskId, String toTaskId);
