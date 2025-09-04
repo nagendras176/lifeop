@@ -172,54 +172,42 @@ final objectivesData = objectivesRows.map((o) => Objective(
     await (delete(tasks)..where((t) => t.id.equals(id))).go();
   }
 
-  @override
-  Future<void> reorderTasks(List<String> taskIds) async {
-    int index = 0;
-    for (final id in taskIds) {
-      await (update(tasks)..where((t) => t.id.equals(id))).write(TasksCompanion(orderIndex: Value(index++)));
-    }
-  }
-
-  @override
-  Future<List<domain.Task>> getTasksByStatus(domain.TaskStatus status) async {
-    final rows = await (select(tasks)..where((t) => t.status.equals(status.name))).get();
-    return Future.wait(rows.map(_hydrateTask));
-  }
-
-  @override
-  Future<List<domain.Task>> getTasksByPriority(domain.Priority priority) async {
-    final rows = await (select(tasks)..where((t) => t.priority.equals(priority.name))).get();
-    return Future.wait(rows.map(_hydrateTask));
-  }
-
+  // Tags
   @override
   Future<void> addTagToTask(String taskId, domain.Tag tag) async {
     await into(this.tag).insert(TagCompanion(
-          taskId: Value(taskId),
-          name: Value(tag.name),
-          color: Value(tag.color?.toARGB32()),
-        ));
+      taskId: Value(taskId),
+      name: Value(tag.name),
+      color: Value(tag.color?.toARGB32()),
+    ));
   }
 
   @override
   Future<void> removeTagFromTask(String taskId, String tagName) async {
     await (delete(tag)
-          ..where((t) => t.taskId.equals(taskId) & t.name.equals(tagName)))
+      ..where((t) => t.taskId.equals(taskId) & t.name.equals(tagName)))
         .go();
   }
 
+  // Links
   @override
   Future<void> linkTasks(String fromTaskId, String toTaskId) async {
     await into(taskLinks).insert(TaskLinksCompanion(
-          fromTaskId: Value(fromTaskId),
-          toTaskId: Value(toTaskId),
-        ));
+      fromTaskId: Value(fromTaskId),
+      toTaskId: Value(toTaskId),
+    ));
   }
 
   @override
   Future<void> unlinkTasks(String fromTaskId, String toTaskId) async {
     await (delete(taskLinks)
-          ..where((l) => l.fromTaskId.equals(fromTaskId) & l.toTaskId.equals(toTaskId)))
+      ..where((l) => l.fromTaskId.equals(fromTaskId) & l.toTaskId.equals(toTaskId)))
         .go();
   }
-}
+
+  Stream<List<Task>> getTasksStream(String id) {
+    return (select(tasks)..where((task) => task.id.equals(id))).watch();
+  }
+
+  
+  }

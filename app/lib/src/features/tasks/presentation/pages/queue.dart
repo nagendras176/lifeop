@@ -1,4 +1,3 @@
-import 'package:app/src/features/tasks/domain/entities/task.dart';
 import 'package:app/src/features/tasks/presentation/providers/task_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,7 +7,7 @@ class TaskQueueScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final tasksAsync = ref.watch(tasksByParentIdProvider('')); // Empty string for root tasks
+    final tasksAsync = ref.watch(tasksByParentIdProvider('root')); // Use the correct provider
 
     return Scaffold(
       appBar: AppBar(
@@ -38,7 +37,7 @@ class TaskQueueScreen extends ConsumerWidget {
               Text('Error loading tasks: $error'),
               const SizedBox(height: 16),
               ElevatedButton(
-                onPressed: () => ref.refresh(tasksByParentIdProvider('')),
+                onPressed: () => ref.refresh(tasksByParentIdProvider('root')),
                 child: const Text('Retry'),
               ),
             ],

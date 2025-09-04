@@ -1,13 +1,14 @@
 import '../../domain/entities/task.dart';
 import '../../domain/repositories/task_repository.dart';
-import 'package:app/src/core/db/daos/task_dao.dart';
+import '../../../../core/db/daos/drift_task_dao.dart';
 
 class TaskRepositoryImpl implements TaskRepository {
-  final TaskDao dao;
+  final DriftTaskDao dao;
+
   TaskRepositoryImpl(this.dao);
 
   @override
-  Future<List<Task>> getTasks() async {
+  Future<List<Task>> getAllTasks() async {
     return dao.getAllTasks();
   }
 
@@ -22,7 +23,7 @@ class TaskRepositoryImpl implements TaskRepository {
   }
 
   @override
-  Future<Task> createTask(Task task) async {
+  Future<Task> insertTask(Task task) async {
     return dao.insertTask(task);
   }
 
@@ -34,10 +35,5 @@ class TaskRepositoryImpl implements TaskRepository {
   @override
   Future<void> deleteTask(String id) async {
     return dao.deleteTask(id);
-  }
-
-  @override
-  Future<void> reorderTasks(List<String> taskIds) async {
-    return dao.reorderTasks(taskIds);
   }
 }
